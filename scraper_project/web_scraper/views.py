@@ -11,7 +11,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from django.views.decorators.csrf import csrf_exempt  # Import CSRF exemption
 
 # Replace with your actual Gemini API Key
-GEMINI_API_KEY = "AIzaSyDhDTWXi3I0smmkL_Rf1CCrpdo5NTZEf3E"
+GEMINI_API_KEY = "YOUR_GEMINI_API_KEY"
 GEMINI_API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={GEMINI_API_KEY}"
 
 def home(request):
