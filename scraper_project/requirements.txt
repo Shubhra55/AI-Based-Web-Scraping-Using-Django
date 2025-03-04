@@ -1,0 +1,8 @@
+django
+djangorestframework
+requests
+beautifulsoup4
+google-generativeai
+python-dotenv 
+selenium 
+webdriver-manager 

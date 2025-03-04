@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Web Scraper</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+    <div class="max-w-3xl mx-auto p-6">
+        <h1 class="text-2xl font-bold text-center mb-4">AI Web Scraper</h1>
+
+        <div class="bg-white p-4 shadow rounded">
+            <input type="text" id="url" placeholder="Enter website URL" 
+                class="w-full p-2 border rounded mb-2">
+            <button onclick="scrapeWebsite()" 
+                class="bg-blue-500 text-white px-4 py-2 rounded w-full">Scrape</button>
+        </div>
+
+        <div id="results" class="mt-6 space-y-4"></div>
+    </div>
+
+    <script>
+        function getCSRFToken() {
+            return document.cookie.split('; ')
+                .find(row => row.startsWith('csrftoken='))
+                ?.split('=')[1];
+        }
+
+        function scrapeWebsite() {
+            const url = document.getElementById("url").value;
+            if (!url) {
+                alert("Please enter a valid URL!");
+                return;
+            }
+
+            fetch("/scrape/", {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCSRFToken()  // Include CSRF token
+                },
+                body: JSON.stringify({ url: url }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert("Error: " + data.error);
+                    return;
+                }
+
+                const resultDiv = document.getElementById("results");
+                resultDiv.innerHTML = `
+                    <div class="bg-white p-4 shadow rounded-lg">
+                        <h2 class="text-xl font-bold">${data.title}</h2>
+                        <p class="text-sm text-gray-600"><a href="${data.url}" target="_blank" class="text-blue-500">${data.url}</a></p>
+                        <p class="mt-2"><strong>Category:</strong> ${data.category}</p>
+
+                        <h3 class="text-lg font-semibold mt-3">Headings:</h3>
+                        <ul class="list-disc list-inside text-gray-700 pl-4">
+                            ${data.headings.map(heading => `<li>${heading}</li>`).join("")}
+                        </ul>
+
+                        ${data.paragraphs ? `
+                        <h3 class="text-lg font-semibold mt-3">Paragraphs:</h3>
+                        <p class="text-gray-700">${data.paragraphs.slice(0, 2).join(" ")}</p>
+                        ` : ""}
+                    </div>
+                `;
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+
+</body>
+</html>
+
