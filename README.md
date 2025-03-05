@@ -1,8 +1,6 @@
 # AI-Based-Web-Scraping-Using-Django
 
 
-# AI-Based Web Scraping Using Django
-
 ## 📌 Project Overview
 This project is an **AI-powered web scraping tool** built using **Django, Selenium, and BeautifulSoup**. It extracts **headings and paragraphs** from any given website and classifies the content into predefined categories using **Google Gemini API**. The tool provides a **user-friendly web interface** where users can input a URL and receive structured data.
 
